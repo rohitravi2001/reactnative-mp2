@@ -9,7 +9,6 @@ import {
 
 export default class MovieDetailScreen extends React.Component {
   render = () => {
-    
     // TODO: Recieve the movieItem via navigation params. That's all you have
     // to do on this screen!
     const movieItem = null;
