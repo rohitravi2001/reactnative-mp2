@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -11,14 +11,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
-
-// TABLE_DATA is an array of movie items.
-// See the JSON file to learn the schema.
 var TABLE_DATA = require("../assets/movies.json");
 
-// A MovieCell is the component that defines each row of our
-// FlatList. Notice how we define this as a functional component,
-// since we don't need any lifecycle methods.
+// A MovieCell is one row of the FlatList
 MovieCell = ({ movieItem }) => (
   <View style={styles.movieCell}>
     <View style={styles.movieCellLeft}>
@@ -37,87 +32,81 @@ MovieCell = ({ movieItem }) => (
 );
 
 // This screen displays the list of movies.
-export default class MovieListScreen extends React.Component {
-  // We define our state here. It contains a search object, and a
-  // filter object that holds a set of actors. By default, both of these
-  // values start out empty.
+export default function MovieListScreen(props) {
+  const [search, setSearch] = useState("");
+  const [actors, setActors] = useState([]);
 
-  state = {
-    // TODO: Define this component's state.
+  const selectedMovie = (movieItem) => {
+    props.navigation.navigate("About This Movie", movieItem);
   };
 
-  updateSearch = (search) => {
-    // TODO: Update "search" value in state, using setState.
-  };
+  useEffect(
+    () => {
+      // TODO: Add a "Filter" button to the right bar button.
+      // It should lead to the MovieFilterScreen, and pass the "actors" state
+      // variable as a parameter.
+      // https://reactnavigation.org/docs/modal/
+    },
+    [
+      /* TODO: Insert dependent variables here. */
+    ]
+  );
 
-  selectedMovie = (movieItem) => {
-    // TODO: navigate to the MovieDetailScreen, and pass in movieItem.
-    // See https://reactnavigation.org/docs/params on how to pass data via navigation params.
-  };
+  useEffect(
+    () => {
+      // TODO: Recieve the new "actors" array from the Filters screen here.
+      // When the Done button on the Filter screen is called, it should send
+      // back data via navigation parameters.
+      // https://reactnavigation.org/docs/params#passing-params-to-a-previous-screen
+    },
+    [
+      /* TODO: Insert dependent variables here. */
+    ]
+  );
 
-  navigateToFilter = () => {
-    // TODO: Navigate to the Filter screen, and pass in the actors from this screen's state.
-    // See https://reactnavigation.org/docs/params on how to pass data via navigation params.
-  };
-
-  focusTriggered = () => {
-    // TODO: On "focusTriggered", check to see if we recieved data through route params
-    // from the Filter screen. If we did, then update this screen's actors state using setState.
-    // Hint: params are located at this.props.route.params
-  };
-
-  componentDidMount = () => {
-    this.props.navigation.setOptions({
-      headerRight: () => (
-        <Button onPress={this.navigateToFilter} title="Filter" />
-      ),
-    });
-
-    this.props.navigation.addListener("focus", this.focusTriggered);
-  };
-
-  render = () => {
-    // Here, we set up the renderItem method.
-    // It returns NULL if an item isn't included in the current filter.
-    const renderItem = ({ item }) => {
-
-      // TODO: Validate that this item meets the search criteria based on state.
-      // If the search bar is empty, then this should be true.
-      var meetsSearchCriteria = true;
-
-      // TODO: Validate that this item meets the filter criteria based on state.
-      // If no actors are selected, then this should be true.
-      var meetsActorsCriteria = true;
-
-      if (meetsSearchCriteria && meetsActorsCriteria) {
-        return (
-          // We wrap each MovieCell in a <TouchableOpacity /> so that we can detect taps.
-          // On tap, we call this.selectedMovie(...) and pass in the movie item.
-          <TouchableOpacity
-            activeOpacity={0.8}
-            key={item.id}
-            onPress={() => this.selectedMovie(item)}
-          >
-            <MovieCell movieItem={item} />
-          </TouchableOpacity>
-        );
-      } else {
-        return null;
-      }
+  // This method will be necessary for the FlatList.
+  // You shouldn't need to make changes to it.
+  const renderItem = ({ item }) => {
+    const overlapFound = (listA, listB) => {
+      var foundActor = false;
+      listA.forEach((x) => {
+        if (listB.includes(x)) {
+          foundActor = true;
+        }
+      });
+      return foundActor;
     };
 
-    return (
-      <SafeAreaView style={styles.container}>
-
-        {/* TODO: Add a SearchBar here. Use the "this.updateSearch" method where appropriate. 
-            SearchBar: https://reactnativeelements.com/docs/searchbar/ */}
-
-        {/* TODO: Add a FlatList here. Use TABLE_DATA and the "renderItem" method where appropriate. 
-            FlatList: https://reactnative.dev/docs/flatlist */}
-
-      </SafeAreaView>
-    );
+    // Handles empty inputs & actual search/filter data
+    var meetsSearchCriteria =
+      search.trim() == "" ||
+      item.title.toLowerCase().includes(search.trim().toLowerCase());
+    var meetsActorsCriteria =
+      actors.length == 0 || overlapFound(actors, item.actors);
+    if (meetsSearchCriteria && meetsActorsCriteria) {
+      return (
+        // On tap, selectedMovie is called with the movie item
+        <TouchableOpacity
+          activeOpacity={0.8}
+          key={item.id}
+          onPress={() => selectedMovie(item)}
+        >
+          <MovieCell movieItem={item} />
+        </TouchableOpacity>
+      );
+    } else {
+      return null;
+    }
   };
+
+  // Our final view consists of a search bar and flat list, wrapped in
+  // a SafeAreaView to support iOS.
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* TODO: Add a SearchBar: https://reactnativeelements.com/docs/searchbar/ */}
+      {/* TODO: Add a FlatList: https://reactnative.dev/docs/flatlist */}
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
