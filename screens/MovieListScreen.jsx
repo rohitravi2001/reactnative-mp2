@@ -37,7 +37,7 @@ export default function MovieListScreen(props) {
   const [actors, setActors] = useState([]);
 
   const selectedMovie = (movieItem) => {
-    props.navigation.navigate("About This Movie", movieItem);
+    // TODO: What should you do when a user selects a movie?
   };
 
   useEffect(
