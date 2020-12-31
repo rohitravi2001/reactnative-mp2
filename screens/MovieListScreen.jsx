@@ -15,20 +15,10 @@ var TABLE_DATA = require("../assets/movies.json");
 
 // A MovieCell is one row of the FlatList
 MovieCell = ({ movieItem }) => (
-  <View style={styles.movieCell}>
-    <View style={styles.movieCellLeft}>
-      <Image
-        source={{ uri: movieItem.posterurl }}
-        style={styles.movieCellImage}
-      ></Image>
-    </View>
-    <View style={styles.movieCellRight}>
-      <Text style={styles.movieCellTitle}>{movieItem.title}</Text>
-      <Text style={styles.movieCellSubtitle}>
-        {movieItem.actors.join(", ")}
-      </Text>
-    </View>
-  </View>
+  // TODO: Create and return the MovieCell component.
+  // HINT: Take a look at the movieCell styles, as well as the video
+  // demo in the spec.
+  <View />
 );
 
 // This screen displays the list of movies.
@@ -65,7 +55,6 @@ export default function MovieListScreen(props) {
   );
 
   // This method will be necessary for the FlatList.
-  // You shouldn't need to make changes to it.
   const renderItem = ({ item }) => {
     const overlapFound = (listA, listB) => {
       var foundActor = false;
@@ -77,22 +66,18 @@ export default function MovieListScreen(props) {
       return foundActor;
     };
 
-    // Handles empty inputs & actual search/filter data
-    var meetsSearchCriteria =
-      search.trim() == "" ||
-      item.title.toLowerCase().includes(search.trim().toLowerCase());
-    var meetsActorsCriteria =
-      actors.length == 0 || overlapFound(actors, item.actors);
+    // TODO: When does a movie meet the search criteria?
+    // Your logic should handle both an empty search field and a filled search field.
+    var meetsSearchCriteria = true;
+
+    // TODO: When does a movie meet the filter criteria?
+    // Your logic should handle the edge case where there are no actors selected.
+    var meetsActorsCriteria = true;
+
     if (meetsSearchCriteria && meetsActorsCriteria) {
       return (
-        // On tap, selectedMovie is called with the movie item
-        <TouchableOpacity
-          activeOpacity={0.8}
-          key={item.id}
-          onPress={() => selectedMovie(item)}
-        >
-          <MovieCell movieItem={item} />
-        </TouchableOpacity>
+        // TODO: Insert a MovieCell, wrapped by a TouchableOpacity so we can handle taps.
+        <View />
       );
     } else {
       return null;

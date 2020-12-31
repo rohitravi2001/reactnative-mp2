@@ -32,6 +32,7 @@ export default function MovieFilterScreen(props) {
       //  1) Hide the left button.
       //  2) Show a "Done" button on the right that navigates back to the MovieListScreen
       //      and passes back our current list of actors via params.
+      // Look in the React Navigation docs on how to do this.
     },
     [
       /* TODO: Insert dependent state variables here. */
