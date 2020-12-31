@@ -54,7 +54,8 @@ export default function MovieListScreen(props) {
     ]
   );
 
-  // This method will be necessary for the FlatList.
+  // Input: a movieItem (movie object). See movies.json for structure.
+  // Output: a cell used by the FlatList
   const renderItem = ({ item }) => {
     const overlapFound = (listA, listB) => {
       var foundActor = false;
