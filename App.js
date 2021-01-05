@@ -1,14 +1,15 @@
 // App.js is the entry point of our application.
-
 import React from "react";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import MovieListScreen from "./screens/MovieListScreen";
-import MovieDetailScreen from "./screens/MovieDetailScreen";
-import MovieFilterScreen from "./screens/MovieFilterScreen";
+import MovieListScreen from "./screens/MovieListScreen/MovieListScreen.main";
+import MovieDetailScreen from "./screens/MovieDetailScreen/MovieDetailScreen.main";
+import MovieFilterScreen from "./screens/MovieFilterScreen/MovieFilterScreen.main";
 
-/* This app has three screens.
+/* TODO: 
+
+  This app has three screens:
     (1) MovieListScreen
     (2) MovieDetailScreen
     (3) MovieFilterScreen
@@ -19,10 +20,7 @@ import MovieFilterScreen from "./screens/MovieFilterScreen";
   This setup is identical to the setup in the React Navigation documentation.
   Read the example carefully to set up this app's screen heirarchy in a similar manner.
 
-  https://reactnavigation.org/docs/modal
-  
-*/
-
+  https://reactnavigation.org/docs/modal */
 export default function App() {
-  return <NavigationContainer></NavigationContainer>;
+  return <NavigationContainer>{}</NavigationContainer>;
 }

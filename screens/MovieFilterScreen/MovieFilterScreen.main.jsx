@@ -3,18 +3,22 @@ import {
   SafeAreaView,
   FlatList,
   View,
-  StyleSheet,
   TouchableOpacity,
   Text,
   Button,
-  StatusBar,
 } from "react-native";
-import { getAllActors } from "../constants/Constants";
 
-ALL_ACTORS = getAllActors();
+import { getAllActors } from "../../constants/Constants";
+import { styles } from "./MovieFilterScreen.styles";
 
-export default function MovieFilterScreen(props) {
+const ALL_ACTORS = getAllActors();
+
+// Input: navigation & route params, which we recieve through React Navigation
+// Output: a Movie Filter Screen component, which displays a list of actors to filter on.
+export default function MovieFilterScreen({ navigation, route }) {
   const [actors, setActors] = useState([]);
+
+  // TODO: Destructure navigation params from props.
 
   useEffect(
     () => {
@@ -39,10 +43,14 @@ export default function MovieFilterScreen(props) {
     ]
   );
 
-  // When a user taps on an actor, either insert or remove the actor
-  // from our state actors array.
+  // When we tap an actor cell, flip the boolean!
   const didTapActorCell = (actor) => {
-    var newActors = [...actors];
+    // We use the spread operator here to create a copy of the
+    // actors array. This is typically how we deal with arrays in state,
+    // since we can't directly change the value of the old array
+    // (it won't re-render the screen, AND state is supposed
+    // to be updated ONLY via the setter function!)
+    let newActors = [...actors];
     if (actors.includes(actor)) {
       newActors.splice(newActors.indexOf(actor), 1);
     } else {
@@ -51,17 +59,16 @@ export default function MovieFilterScreen(props) {
     setActors(newActors);
   };
 
-  const renderSelectItem = (item) => {
-    var actual = item.item;
+  const renderSelectItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        key={item.index}
-        onPress={() => didTapActorCell(actual)}
+        key={index}
+        onPress={() => didTapActorCell(item)}
       >
         <View style={styles.filtercell}>
           <Text style={{ fontFamily: "Avenir", fontSize: 15 }}>
-            {actors.includes(actual) ? "✓ " + actual : " " + actual}
+            {actors.includes(item) ? "✓ " + item : " " + item}
           </Text>
         </View>
       </TouchableOpacity>
@@ -83,20 +90,3 @@ export default function MovieFilterScreen(props) {
     </SafeAreaView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-    backgroundColor: "#ffffff",
-  },
-  filtercell: {
-    backgroundColor: "#ecf0f1",
-    padding: 14,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: 20,
-  },
-});
