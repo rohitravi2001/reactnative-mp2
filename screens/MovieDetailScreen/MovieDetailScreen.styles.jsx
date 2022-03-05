@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#ffffff",
   },
+  movieCellImage: { height: 200, width: 150, justifyContent: 'center', alignItems: 'center', resizeMode: "contain" },
   h1: {
     fontFamily: "Avenir",
     fontSize: 30,
